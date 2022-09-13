@@ -56,9 +56,14 @@ and returns
 
 A) Would running the learning algorithm LLL on two different training datasets Dtrain1\mathcal{D}_{\it train_1}Dtrain1​​ and Dtrain2\mathcal{D}_{\it train_2}Dtrain2​​ produce the same classifier? In other words, would h1h_1h1​ = L(Dtrain1)L(\mathcal{D}_{\it train_1})L(Dtrain1​​) be the same classifier as h2h_2h2​ = L(Dtrain2)L(\mathcal{D}_{\it train_2})L(Dtrain2​​)? What if those training datasets were pulled from the same distribution?
 
+h1 would not be the same as h2 in this case. 
+If Dtrain1 and Dtrain2 were sampled from the same distribution then it wouldn't be guaranteed that h1=h2 but at the very least they would perform similarly.
+
 Now, consider a situation in which someone is trying to sell you a new learning algorithm, and you want to know how good it is. There is an interesting result that says that without any assumptions about your data, There is no learning algorithm that, for all data sources, is better than every other learning algorithm. So, you'll need to assess the learning algorithm's performance in the context of a particular data source.
 
 Check Yourself: What is the difference between a classifier and a learning algorithm? Understanding the distinction will help you when thinking about this question. (Stuck? Check the notes)
+
+A classifier only assigns a particular data point to one of at least two categories, while a learning algorithm is any general computational method that establishes the structure of a dataset to be used for some purpose.
 
 Assume that you have a generator of labeled data, G\mathcal{G}G, which will be suitable for your application. The learning algorithm's performance on G\mathcal{G}G-generated data will be a good predictor of the learning algorithm's performance on data from your application. (You can review how to evaluate learning algorithms in the notes)
 
@@ -75,7 +80,11 @@ def eval_learning_alg(L, G, n):
 
 Check Yourself: What are GGG and nnn in the code above?
 
+G and n are defined in the function header, where G is the data generating function and n is the number data points used to train the algorithm.
+
 Explain why Linnea's strategy might not be so good.
+
+Her strategy will create problems when the test set includes data points already used in training.
 
 C) Next, Linnea decides to generate one classifier hhh but evaluate that classifier with multiple (10) test sets in her eval_learning_alg. More specifically, Linnea changed her code above into:
 
@@ -93,11 +102,37 @@ def eval_learning_alg(L, G, n):
 
 Is Linnea's strategy good now? Explain why or why not.
 
+This new strategy is a slight improvement but will still suffer from the same issue described above.
+Additionally, the mean score is returned rather than the best.
+
 Check Yourself: How many classifiers is Linea generating and testing from the learning algorithm?
+
+She generates one classifier and tests it 10 times.
 
 D) Now design a better procedure for evaluating LLL. Write pseudocode for a procedure that takes LLL, G\mathcal{G}G and nnn and returns a score. Say what the output score measures and what the best and worst values are.
 
 def better_eval_learning_alg(L, G, n):
-    # your procedure
+    #take training samples
+	trainX, trainY=G(n)
+	#runnit
+	h=L(trainX, trainY)
+	
+	#EEVALKILMER
+	#Assume we have a function called sampleWithoutDuplicates which rejects a sample point if it's already in the training set
+	#It takes G, n as inputs and returns n points
+	
+	min_score=0
+	big=0
+	
+	for j in range(10):
+		bigtest=sampleWithoutDuplicates(G,n)
+		big=eval_classifier(h, bigtest)
+		
+		if (big > min_score) then min_score=big
+		
+	return min_score
+	
 
 E) Explain why your method might be more desirable than Linnea's.
+
+It addresses the 2 problems described in C) - UNDERSTAND!? Fig fuck
