@@ -136,3 +136,11 @@ def better_eval_learning_alg(L, G, n):
 E) Explain why your method might be more desirable than Linnea's.
 
 It addresses the 2 problems described in C) - UNDERSTAND!? Fig fuck
+
+3) Evaluating a learning algorithm with a small amount of data
+
+In reality, it's almost never possible to have a generator of all the data you want; in fact, in some domains data is very expensive to collect, and so you are given a fixed, small set of samples. Now assume that you only have 100 labeled data points to use for training and testing/evaluation.
+
+A) In the last section, you thought about how to evaluate a learning algorithm. Now that you are given only 100 labeled data points in total, how would you evaluate a learning algorithm? Specifically, how would you implement better_eval_learning_alg from 2C) without G\mathcal{G}G but instead with your 100 labeled data? (You don't need to write out new pseudocode for better_eval_learning_alg but still think about how you would implement it.) 
+
+In this restricted/realistic scenario a better approach would be to split the given 100 points into training, test, and validation sets of approximately equal size (say 25 pts.)
