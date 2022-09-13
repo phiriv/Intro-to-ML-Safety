@@ -1,0 +1,103 @@
+1. Evaluating a classifier
+
+Imagine that you have a generator G\mathcal{G}G that pulls from a finite dataset of millions of points.
+
+Let's assume that Dtrain\mathcal{D}_{\it train}Dtrain​ is one such output of the generator G\mathcal{G}G.
+
+Consider the situation in which you have run a machine learning algorithm on some training dataset Dtrain\mathcal{D}_{\it train}Dtrain​, and it has returned to you a specific hhh. Your job is to design (but not implement yet!) a procedure for evaluating hhh's effectiveness as a classifier. (Want more on classifiers? Check the notes)
+
+Assume we have a score function that takes a classifier hhh, dataset DDD - a tuple of data and labels: (X,y)(X,y)(X,y) - and returns the percentage of correctly classified examples as a decimal between 0 and 1. We'll package it as follows:
+
+def eval_classifier(h, D):
+    test_X, test_y = D
+    return score(h, test_X, test_y)
+                                                                                                                                                                                                                                                                                                
+A) Percy Eptron suggests reusing the training data to assess hhh:
+
+eval_classifier(h, D_train)
+
+Explain why Percy's strategy might not be so good.
+
+His strategy won't be effective in situations where the test data is radically different than the test data, i.e. poor generalization
+
+B) Now write down a better approach for evaluating hhh, which may use hhh, G\mathcal{G}G, and Dtrain\mathcal{D}_{\it train}Dtrain​, and computes a score for hhh. The syntax is not important, but do write something down. What does this score measure and what is the range of possible outputs?
+
+Assume we have a function generate which takes in G and returns a randomly sampled dataset
+
+def eval2 (h, G, n_iter):
+	D=generate(G)
+	count=0
+	min_score=0
+	
+	while (count <  n_iter):
+		big=eval_classifier(h,D)
+		
+		if (big > min_score) then min_score=big
+
+C) Explain why your method might be more desirable than Percy's. What problem does it fix?
+
+This method is more desirable than our foolish friend's because it is better equipped to handle test datasets that differ in composition to the training set.
+It is also customizable to the user's patience level.
+
+D) How would your method from B score the classifier hhh, if Dtest\mathcal{D}_{\it test}Dtest​ came from a different distribution than G\mathcal{G}G, but Dtrain\mathcal{D}_{\it train}Dtrain​ was unchanged?
+
+In this scenario my method would score the classifier inaccurately given that the underlying distribution changed, and the degree of inaccuray would change depending on how different the new dist (say F) was from G.
+
+
+2) Evaluating a learning algorithm
+
+A learning algorithm is a function LLL that takes as input
+
+    data set Dtrain\mathcal{D}_{\it train}Dtrain​ as training data
+
+and returns
+
+    a classifier hhh.
+
+A) Would running the learning algorithm LLL on two different training datasets Dtrain1\mathcal{D}_{\it train_1}Dtrain1​​ and Dtrain2\mathcal{D}_{\it train_2}Dtrain2​​ produce the same classifier? In other words, would h1h_1h1​ = L(Dtrain1)L(\mathcal{D}_{\it train_1})L(Dtrain1​​) be the same classifier as h2h_2h2​ = L(Dtrain2)L(\mathcal{D}_{\it train_2})L(Dtrain2​​)? What if those training datasets were pulled from the same distribution?
+
+Now, consider a situation in which someone is trying to sell you a new learning algorithm, and you want to know how good it is. There is an interesting result that says that without any assumptions about your data, There is no learning algorithm that, for all data sources, is better than every other learning algorithm. So, you'll need to assess the learning algorithm's performance in the context of a particular data source.
+
+Check Yourself: What is the difference between a classifier and a learning algorithm? Understanding the distinction will help you when thinking about this question. (Stuck? Check the notes)
+
+Assume that you have a generator of labeled data, G\mathcal{G}G, which will be suitable for your application. The learning algorithm's performance on G\mathcal{G}G-generated data will be a good predictor of the learning algorithm's performance on data from your application. (You can review how to evaluate learning algorithms in the notes)
+
+B) Linnea Separatorix wants to evaluate a learning algorithm, and suggests the following procedure:
+
+def eval_learning_alg(L, G, n):
+    # draw a set of n training examples (points and labels)
+    train_X, train_y = G(n)
+    # run L
+    h = L(train_X, train_y)
+    # evaluate using your classifier scoring procedure, on some new labeled data
+    test_data = G(n) # draw new set of test data
+    return eval_classifier(h, test_data)
+
+Check Yourself: What are GGG and nnn in the code above?
+
+Explain why Linnea's strategy might not be so good.
+
+C) Next, Linnea decides to generate one classifier hhh but evaluate that classifier with multiple (10) test sets in her eval_learning_alg. More specifically, Linnea changed her code above into:
+
+def eval_learning_alg(L, G, n):
+    # draw a set of n training examples (points and labels)
+    train_X, train_y = G(n)
+    # run L
+    h = L(train_X, train_y)
+    # evaluate using your classifier scoring procedure, on some new labeled data
+    score = 0
+    for i in range(10):
+        test_data = G(n) # draw new set of test data
+        score += eval_classifier(h, test_data)
+    return score/10
+
+Is Linnea's strategy good now? Explain why or why not.
+
+Check Yourself: How many classifiers is Linea generating and testing from the learning algorithm?
+
+D) Now design a better procedure for evaluating LLL. Write pseudocode for a procedure that takes LLL, G\mathcal{G}G and nnn and returns a score. Say what the output score measures and what the best and worst values are.
+
+def better_eval_learning_alg(L, G, n):
+    # your procedure
+
+E) Explain why your method might be more desirable than Linnea's.
