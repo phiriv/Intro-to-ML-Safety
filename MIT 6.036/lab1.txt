@@ -135,7 +135,7 @@ def better_eval_learning_alg(L, G, n):
 
 E) Explain why your method might be more desirable than Linnea's.
 
-It addresses the 2 problems described in C) - UNDERSTAND!? Fig fuck
+It addresses the 2 problems described in C); namely, generalization and not fully describing the distribution of returned scores.
 
 3) Evaluating a learning algorithm with a small amount of data
 
