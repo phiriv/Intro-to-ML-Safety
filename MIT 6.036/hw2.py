@@ -479,12 +479,14 @@ def test_xval_learning_alg(xval_learning_alg,perceptron):
         incorrect(expected,result)
     
 ######################################################################
-# Your code is written below
+# YOUR CODE HERE
 
 def perceptron(data, labels, params={}, hook=None):
     # if T not in params, default to 100
     T = params.get('T', 100)
     # Your implementation here
+    print('VAT DUU I IMPLEMEK')
+    
     pass
 
 #Visualization of perceptron, comment in the next three lines to see your perceptron code in action:
@@ -496,12 +498,15 @@ for datafn in (super_simple_separable_through_origin,super_simple_separable):
 
 #Test Cases:
 #test_perceptron(perceptron)
+perceptron(data1,labels1)
 
 
 def averaged_perceptron(data, labels, params={}, hook=None):
     # if T not in params, default to 100
     T = params.get('T', 100)
     # Your implementation here
+    
+    
     pass
 
 # Visualization of Averaged Perceptron:
