@@ -485,7 +485,20 @@ def perceptron(data, labels, params={}, hook=None):
     # if T not in params, default to 100
     T = params.get('T', 100)
     # Your implementation here
-    print('VAT DUU I IMPLEMEK')
+    
+    #initialize all parameters (thetas) to zero
+    n=np.size(data1,0)
+    theta=np.zeros((n,1),dtype=float)
+    theta0=0
+    
+    #run through data in given order for T iterations
+    #perform update when current params make a mistake on the data point
+    for t in range(T):
+        for i in range(n):
+            if ( labels[i]*(theta.T*data[i]+theta0) <=0):
+                theta=theta+labels[i]
+                theta0=theta0+labels[i]
+        
     
     pass
 
@@ -505,7 +518,7 @@ def averaged_perceptron(data, labels, params={}, hook=None):
     # if T not in params, default to 100
     T = params.get('T', 100)
     # Your implementation here
-    
+    theta=np.array()
     
     pass
 
