@@ -487,27 +487,38 @@ def perceptron(data, labels, params={}, hook=None):
     # Your implementation here
     
     #initialize all parameters (thetas) to zero
-    n=np.size(data1,0)
-    theta=np.zeros((n,1),dtype=float)
-    theta0=0
+    #n=np.size(data1,0) clunky!
+    d,n=data.shape
+    theta=np.zeros((d,1),dtype=float)
+    theta0=np.zeros(1)
     
     #run through data in given order for T iterations
     #perform update when current params make a mistake on the data point
     for t in range(T):
         for i in range(n):
-            if ( labels[i]*(theta.T*data[i]+theta0) <=0):
-                theta=theta+labels[i]
-                theta0=theta0+labels[i]
-        
+            
+            #if ( (labels1[0,i]*(np.dot(theta.T,data1[:,i]) +theta0)) <=0 ):
+                #theta=theta+labels[0,i]
+                #theta0=theta0+labels[0,i]   MESSY & CONFUSING
+                
+            y=labels[0,i]
+            x=data[:,i]
+            
+            prod=y*(np.dot(x,theta)+theta0)
+            #have to do the above line as numpy expressions can't be
+            #directly subsituted into if statements
+            if (np.sign(prod)<=0):
+                theta[:,0]=theta[:,0]+ y*x
+                theta0=theta0+y
     
-    pass
+    return (theta,theta0)
 
 #Visualization of perceptron, comment in the next three lines to see your perceptron code in action:
-'''
+
 for datafn in (super_simple_separable_through_origin,super_simple_separable):
    data, labels = datafn()
    test_linear_classifier(datafn,perceptron,draw=True)
-'''
+
 
 #Test Cases:
 #test_perceptron(perceptron)
