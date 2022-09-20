@@ -521,7 +521,7 @@ for datafn in (super_simple_separable_through_origin,super_simple_separable):
 
 
 #Test Cases:
-#test_perceptron(perceptron)
+test_perceptron(perceptron)
 perceptron(data1,labels1)
 
 
@@ -529,19 +529,49 @@ def averaged_perceptron(data, labels, params={}, hook=None):
     # if T not in params, default to 100
     T = params.get('T', 100)
     # Your implementation here
-    theta=np.array()
     
-    pass
+    #initialize all parameters (thetas) to zero
+    d,n=data.shape
+    theta=np.zeros((d,1))
+    theta0=np.zeros(1)
+    thetas=np.zeros((d,1))
+    theta0s=np.zeros(1)
+    
+    #run through data in given order for T iterations
+    #perform update when current params make a mistake on the data point
+    for t in range(T):
+        for i in range(n):
+            
+            #if ( (labels1[0,i]*(np.dot(theta.T,data1[:,i]) +theta0)) <=0 ):
+                #theta=theta+labels[0,i]
+                #theta0=theta0+labels[0,i]   MESSY & CONFUSING
+                
+            y=labels[0,i]
+            x=data[:,i]
+            
+            prod=y*(np.dot(x,theta)+theta0)
+            #have to do the above line as numpy expressions can't be
+            #directly subsituted into if statements
+            if (np.sign(prod)<=0):
+                theta[:,0]=theta[:,0]+ y*x
+                theta0=theta0+y
+                
+            #accumulate stored theta values as iterations continue
+            thetas=thetas+theta
+            theta0s=theta0s+theta0
+    
+    return (thetas/(n*T),theta0s/(n*T)) #return arithmetic mean
+    
 
 # Visualization of Averaged Perceptron:
-'''
+
 for datafn in (super_simple_separable, xor, xor_more, big_higher_dim_separable):
    data, labels = datafn()
    test_linear_classifier(datafn,averaged_perceptron,draw=True)
-'''
+
 
 #Test Cases:
-#test_averaged_perceptron(averaged_perceptron)
+test_averaged_perceptron(averaged_perceptron)
 
 def eval_classifier(learner, data_train, labels_train, data_test, labels_test):
     pass
