@@ -574,24 +574,54 @@ for datafn in (super_simple_separable, xor, xor_more, big_higher_dim_separable):
 test_averaged_perceptron(averaged_perceptron)
 
 def eval_classifier(learner, data_train, labels_train, data_test, labels_test):
-    pass
+    
+    th, th0 = learner(data_train,labels_train) #fit model on given training set
+    
+    scr=score(data_test,labels_test,th,th0) #pre-written function
+    n=np.size(data_test,1)
+    
+    return scr/n #score scaled as percentage
 
 #Test cases:
-#test_eval_classifier(eval_classifier,perceptron)
+test_eval_classifier(eval_classifier,perceptron)
 
 
 def eval_learning_alg(learner, data_gen, n_train, n_test, it):
-    pass
+    
+    acc=0
+    
+    for j in range(it):
+        data_train,labels_train=data_gen(n_train)
+        data_test,labels_test=data_gen(n_test)
+        acc+=eval_classifier(learner,data_train, labels_train,data_test,labels_test)
+    
+    return acc/it
 
 #Test cases:
-#test_eval_learning_alg(eval_learning_alg,perceptron)
+test_eval_learning_alg(eval_learning_alg,perceptron)
 
 
 def xval_learning_alg(learner, data, labels, k):
-    pass
+    #create cross-validation slices, assuming input data is pre-shuffled
+    data_s=np.array_split(data,k)
+    labels_s=np.array_split(labels,k)
+    scores=np.zeros(k)
+    
+    #perform fit on k-1 slices and test on excluded slice
+    for j in range(k):
+        D_j=data_s
+        L_j=labels_s
+        D_j=np.delete(D_j,0,j)
+        L_j=np.delete(L_j,0,j)
+        th_j,th0_j=learner(D_j,L_j)
+        
+        scores[j]=score(data_s[j], labels_s[j], th_j, th0_j)
+        
+        
+    return np.average(scores)
 
 #Test cases:
-#test_xval_learning_alg(xval_learning_alg,perceptron)
+test_xval_learning_alg(xval_learning_alg,perceptron)
 
 
 #For problem 10, here is an example of how to use gen_flipped_lin_separable, in this case with a flip probability of 50%
