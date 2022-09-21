@@ -136,6 +136,7 @@ def better_eval_learning_alg(L, G, n):
 E) Explain why your method might be more desirable than Linnea's.
 
 It addresses the 2 problems described in C); namely, generalization and not fully describing the distribution of returned scores.
+Granted OOD issues can still arise due to the problem of induction but such Humean problems are out of scope as the expression goes ;)
 
 3) Evaluating a learning algorithm with a small amount of data
 
