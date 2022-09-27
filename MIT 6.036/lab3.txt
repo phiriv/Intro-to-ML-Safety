@@ -1,0 +1,57 @@
+1) Feature engineering for car data
+
+Last week, given a dataset of feature vectors and their corresponding labels, we saw how to implement two algorithms for building linear classifiers. This week we are looking at how these features are defined from raw collected data and some implications of those feature choices on the learning algorithm.
+
+In this part of the lab, we are going to explore different ways of defining features for data.
+
+Open auto-mpg.tsv in a text editor (or view on the web here). This file is in a common format, called "tab separated values". In the first line you will find the names of the columns. Each row is a data point; the first column is the label for that point (1 or -1).
+
+"The data concerns city-cycle fuel consumption in miles per gallon, to be predicted in terms of 3 multivalued discrete and 5 continuous attributes." (Quinlan, 1993)
+
+The original data came from the StatLib library from CMU. It was modified by Ross Quinlan to remove entries with unknown mpg (miles per gallon). We have modified it further by removing six entries with unknown horsepower. We have also binarized the mpg column to turn this into a classification problem (later in the term, we will look at predicting continuous values, i.e. regression problems). Here are the nine columns in the dataset:
+
+1. mpg:           continuous (modified by us to be -1 for mpg < 23, 1 for others)
+2. cylinders:     multi-valued discrete
+3. displacement:  continuous
+4. horsepower:    continuous
+5. weight:        continuous
+6. acceleration:  continuous
+7. model year:    multi-valued discrete
+8. origin:        multi-valued discrete
+9. car name:      string (many values)
+
+There are 392 entries in the dataset, evenly split between positive and negative labels. The field names should be self-explanatory except possibly displacement and origin. You can read about displacement here; in this data set displacement is in cubic inches. origin is 1=USA, 2=Europe, 3=Asia. We'll ignore car name in this assignment.
+
+A new student, Hiper Playne, suggests that we should just use all the numeric features in their raw form to predict whether the car will get good or bad gas mileage. He will use the Perceptron algorithm to learn the classifier. Once he trains the model on this dataset, he wants to predict whether cars in 2019 will get good gas mileage.
+
+1A) What problems do you think Hiper might have with this method?
+
+	Because weight values and cylinders values are on different scales, perceptron might take many iterations
+	origin is a discrete valued feature
+	model year is in the 70s, so a classifier based on this data might not perform well in 2019
+	
+1B) For each feature from the following:
+[cylinders, displacement, horsepower, weight, acceleration, model_year, origin]
+indicate how you can represent it so as to make classification easier and get good generalization on unseen data, by choosing one of:
+
+    'drop' - leave the feature out,
+    'raw' - use values as they are,
+    'standard' - standardize values by subtracting out average value and dividing by standard deviation,
+    'one-hot' - use a one-hot encoding.
+
+There could be multiple answers that make sense for each feature; please mention the tradeoffs between each answer. Write down your choices.
+
+
+
+1C) How can car name, a textual feature, be transformed into a feature which can be used by the perceptron algorithm?
+
+
+
+1D) Given a learning algorithm (example: perceptron), say you found 333 ideas for how to represent the textual feature from 1C. Talk with your partner to determine which of the following options would be appropriate, for determining the best feature representation out of the 333 ideas:
+
+    For each feature representation, compute a classifier by running the algorithm on all the data and compare the number of errors of that classifier on the data.
+    Split the data into two sets: training is 90%, test is 10%. For each feature representation, compute a classifier by running the algorithm on the training data, compare the sum of the number of errors of that classifier on the training and test data.
+    Split the data into two sets: training is 90%, test is 10%. For each feature representation, compute a classifier by running the algorithm on the training data, compare the number of errors of that classifier on the test data.
+    For each feature representation, perform 10-fold cross-validation and compare the resulting average error rate.
+
+
