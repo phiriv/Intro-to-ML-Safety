@@ -41,17 +41,29 @@ indicate how you can represent it so as to make classification easier and get go
 
 There could be multiple answers that make sense for each feature; please mention the tradeoffs between each answer. Write down your choices.
 
+cylinders: 'one-hot' as a cursory glance at the data reveals that most of the higher-MPG vehicles have 4 cylinders, so the presence of this feature is a good rule-of-thumb
 
+displacement: 'drop' as there appears to be little correlation between this feature and the result we're interested in
+
+horsepower: 'standard' to deal with the numeric variation
+
+weight: 'standard' same reasoning as bove
+
+acceleration: 'raw' as the values are within a yuman appreciable order of magnituded
+
+model_year: 'raw' same reasoning a above
+
+origin: 'one-hot' discrete categorical variabl so this mapping makes sense
 
 1C) How can car name, a textual feature, be transformed into a feature which can be used by the perceptron algorithm?
 
+Some kind of character-to-numeric mapping that begins by splitting the string to first identify the make (company) and then proceeds from there
 
+1D) Given a learning algorithm (example: perceptron), say you found 3 ideas for how to represent the textual feature from 1C. Talk with your partner to determine which of the following options would be appropriate, for determining the best feature representation out of the 3 ideas:
 
-1D) Given a learning algorithm (example: perceptron), say you found 333 ideas for how to represent the textual feature from 1C. Talk with your partner to determine which of the following options would be appropriate, for determining the best feature representation out of the 333 ideas:
-
-    For each feature representation, compute a classifier by running the algorithm on all the data and compare the number of errors of that classifier on the data.
-    Split the data into two sets: training is 90%, test is 10%. For each feature representation, compute a classifier by running the algorithm on the training data, compare the sum of the number of errors of that classifier on the training and test data.
-    Split the data into two sets: training is 90%, test is 10%. For each feature representation, compute a classifier by running the algorithm on the training data, compare the number of errors of that classifier on the test data.
-    For each feature representation, perform 10-fold cross-validation and compare the resulting average error rate.
+    For each feature representation, compute a classifier by running the algorithm on all the data and compare the number of errors of that classifier on the data. NO
+    Split the data into two sets: training is 90%, test is 10%. For each feature representation, compute a classifier by running the algorithm on the training data, compare the sum of the number of errors of that classifier on the training and test data. YES
+    Split the data into two sets: training is 90%, test is 10%. For each feature representation, compute a classifier by running the algorithm on the training data, compare the number of errors of that classifier on the test data. NO
+    For each feature representation, perform 10-fold cross-validation and compare the resulting average error rate. YES
 
 
