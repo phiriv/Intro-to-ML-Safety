@@ -34,9 +34,16 @@ def df2(v):
                2 * (-1. + x + y)])
         
 #da moony
+#simple gradient descent
 def gd(f, df, x0, step_size_fn, max_iter):
-    x=0
+    x=x0
     fs=np.zeros(max_iter)
     xs=np.zeros(max_iter)
+    
+    for t in range(max_iter):
+        x=x.copy()-(step_size_fn(t)*df(x)*f(x))
+        fs.append(f(x))
+        xs.append(x)
+    
     return (x,fs,xs)
 
