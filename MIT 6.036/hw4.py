@@ -41,9 +41,20 @@ def gd(f, df, x0, step_size_fn, max_iter):
     xs=np.zeros(max_iter)
     
     for t in range(max_iter):
-        x=x.copy()-(step_size_fn(t)*df(x)*f(x))
-        fs.append(f(x))
-        xs.append(x)
+        x=x.copy()-(step_size_fn(t)*df(x)*f(x)) #TypeError??
+        fs[t]=(f(x))
+        xs[t]=x
     
     return (x,fs,xs)
+
+# TEST
+def package_ans(gd_vals):
+    x, fs, xs = gd_vals
+    return [x.tolist(), [fs[0], fs[-1]], [xs[0].tolist(), xs[-1].tolist()]]
+
+# Test case 1
+ans=package_ans(gd(f1, df1, cv([0.]), lambda i: 0.1, 1000))
+
+# Test case 2
+ans=package_ans(gd(f2, df2, cv([0., 0.]), lambda i: 0.01, 1000))
 
