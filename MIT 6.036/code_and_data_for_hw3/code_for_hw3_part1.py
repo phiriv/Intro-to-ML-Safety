@@ -296,3 +296,9 @@ print("Also loaded: perceptron, one_hot_internal, test_one_hot")
 ######################################################################
 #   Example for part 3B) test_with_features()
 #test_with_features(super_simple_separable, 2, draw=True, pause=True)
+
+#b=make_polynomial_feature_fun(10)
+#print(b)
+
+#test_with_features(xor_more, 5, draw=True, pause=True)
+
