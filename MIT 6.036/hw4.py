@@ -37,13 +37,14 @@ def df2(v):
 #simple gradient descent
 def gd(f, df, x0, step_size_fn, max_iter):
     x=x0
+    xp=np.shape(x)
     fs=np.zeros(max_iter)
-    xs=np.zeros(max_iter)
+    xs=np.zeros((xp[0],max_iter)) #col vecs of any size
     
     for t in range(max_iter):
-        x=x.copy()-(step_size_fn(t)*df(x)*f(x)) #TypeError??
+        x=x.copy()-(step_size_fn(t)*df(x)*f(x))
         fs[t]=(f(x))
-        xs[t]=x
+        xs[0,t]=x[0]
     
     return (x,fs,xs)
 
