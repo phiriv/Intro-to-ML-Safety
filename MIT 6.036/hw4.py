@@ -48,14 +48,52 @@ def gd(f, df, x0, step_size_fn, max_iter):
     
     return (x,fs,xs)
 
+#alternative soln. (neater)
+def gd2(f, df, x0, step_size_fn, max_iter):
+    x=x0
+    fs=[]
+    xs=[]
+    
+    for t in range(max_iter):
+        f2, df2 = f(x), df(x)
+        fs.append(f2)
+        xs.append(x)
+        step=step_size_fn(t)
+        x=x-step*df2
+        return x, fs, xs
+
 # TEST
 def package_ans(gd_vals):
     x, fs, xs = gd_vals
     return [x.tolist(), [fs[0], fs[-1]], [xs[0].tolist(), xs[-1].tolist()]]
 
 # Test case 1
-ans=package_ans(gd(f1, df1, cv([0.]), lambda i: 0.1, 1000))
+ans=package_ans(gd2(f1, df1, cv([0.]), lambda i: 0.1, 1000))
 
 # Test case 2
-ans=package_ans(gd(f2, df2, cv([0., 0.]), lambda i: 0.01, 1000))
+ans=package_ans(gd2(f2, df2, cv([0., 0.]), lambda i: 0.01, 1000))
 
+#numerical gradient via finite differences
+def num_grad(f, delt=0.001):
+    
+    def df(x):
+        gv=np.zeros(np.size(x))
+        for i in range(np.size(x)):
+            gv[i]=((f(x[i]+delt)-f(x[i]-delt)/(2*delt)))
+            return gv.T
+    
+    return df
+
+#TEST
+x = cv([0.])
+ans=(num_grad(f1)(x).tolist(), x.tolist())
+
+x = cv([0.1])
+ans=(num_grad(f1)(x).tolist(), x.tolist())
+
+x = cv([0., 0.])
+#ans=(num_grad(f2)(x).tolist(), x.tolist()) 
+#IndexError?
+
+x = cv([0.1, -0.1])
+#ans=(num_grad(f2)(x).tolist(), x.tolist())
