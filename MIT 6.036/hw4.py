@@ -77,23 +77,40 @@ ans=package_ans(gd2(f2, df2, cv([0., 0.]), lambda i: 0.01, 1000))
 def num_grad(f, delt=0.001):
     
     def df(x):
-        gv=np.zeros(np.size(x))
+        gv=np.zeros(np.shape(x))
         for i in range(np.size(x)):
-            gv[i]=((f(x[i]+delt)-f(x[i]-delt)/(2*delt)))
+            #compact but hard to read!
+            gv[i,0]=((f(cv(x[i,0]+delt))-f(cv(x[i,0]-delt))/(2*delt))) 
             return gv.T
     
     return df
 
+#alternate soln.
+def num_grad2(f, delt=0.001):
+    def df(x):
+        g=np.zeros(x.shape)
+        #more vars but much more legible
+        for i in range(x.shape[0]):
+            xi=x[i,0]
+            x[i,0]=xi+delt
+            fxp=f(x)
+            x[i,0]=xi-delt
+            fxm=f(x)
+            xi=x[i,0]
+            g[i,0]=(fxp-fxm)/(2*delt)
+        return g
+    return df
+
 #TEST
 x = cv([0.])
-ans=(num_grad(f1)(x).tolist(), x.tolist())
+ans=(num_grad2(f1)(x).tolist(), x.tolist())
 
 x = cv([0.1])
-ans=(num_grad(f1)(x).tolist(), x.tolist())
+ans=(num_grad2(f1)(x).tolist(), x.tolist())
 
 x = cv([0., 0.])
-#ans=(num_grad(f2)(x).tolist(), x.tolist()) 
+ans=(num_grad2(f2)(x).tolist(), x.tolist()) 
 #IndexError?
 
 x = cv([0.1, -0.1])
-#ans=(num_grad(f2)(x).tolist(), x.tolist())
+ans=(num_grad2(f2)(x).tolist(), x.tolist())
