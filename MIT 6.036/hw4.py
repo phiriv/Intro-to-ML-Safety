@@ -125,3 +125,14 @@ def minimize(f, x0, step_size_fn, max_iter):
 ans = package_ans(minimize(f1, cv([0.]), lambda i: 0.1, 1000))
 
 ans = package_ans(minimize(f2, cv([0., 0.]), lambda i: 0.01, 1000))
+
+def hinge(v):
+    return ("HINGE OF HISTORY IS JAHMMED")
+
+# x is dxn, y is 1xn, th is dx1, th0 is 1x1
+def hinge_loss(x, y, th, th0):
+    return 0
+
+# x is dxn, y is 1xn, th is dx1, th0 is 1x1, lam is a scalar
+def svm_obj(x, y, th, th0, lam):
+    pass
