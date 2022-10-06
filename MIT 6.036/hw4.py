@@ -114,3 +114,23 @@ ans=(num_grad2(f2)(x).tolist(), x.tolist())
 
 x = cv([0.1, -0.1])
 ans=(num_grad2(f2)(x).tolist(), x.tolist())
+
+#use num_grad to find local minima
+def minimize(f, x0, step_size_fn, max_iter):
+    x=x0
+    fs=[]
+    xs=[]
+    df=num_grad2(f)
+    
+    for j in range(max_iter):
+        f2=f(x) 
+        fs.append(f2)
+        xs.append(x)
+        step=step_size_fn(j)
+        x=x-step*df
+    
+    return x, fs, xs
+
+ans = package_ans(minimize(f1, cv([0.]), lambda i: 0.1, 1000))
+
+ans = package_ans(minimize(f2, cv([0., 0.]), lambda i: 0.01, 1000))
