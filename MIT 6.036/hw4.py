@@ -128,15 +128,15 @@ ans = package_ans(minimize(f2, cv([0., 0.]), lambda i: 0.01, 1000))
 
 def hinge(v):
     #return ("HINGE OF HISTORY IS JAHMMED")
-    if (v<1):
-        return (1-v)
-    else:
-        return 0
-    #return max(0,1-v)
+    #if (v<1):
+     #   return (1-v)
+    #else:
+        #return 0
+    return max(0,1-v)
 
 # x is dxn, y is 1xn, th is dx1, th0 is 1x1
 def hinge_loss(x, y, th, th0):
-    return hinge(y*(th*x+th0))
+    return hinge(np.dot(y,(np.dot(x.T,th)+th0)))
 
 # x is dxn, y is 1xn, th is dx1, th0 is 1x1, lam is a scalar
 def svm_obj(x, y, th, th0, lam):
@@ -144,6 +144,22 @@ def svm_obj(x, y, th, th0, lam):
     
     sub=0
     for i in range(np.size(x)):
-        sub+=hinge_loss(x[i],y[i],th,th0)
+        sub+=hinge_loss(x,y,th,th0)
     
-    return J+lam*pow(np.dot(th,th),2)
+    return J+lam*np.dot(th.T,th)
+
+def super_simple_separable():
+    X = np.array([[2, 3, 9, 12],
+                  [5, 2, 6, 5]])
+    y = np.array([[1, -1, 1, -1]])
+    return X, y
+
+sep_e_separator = np.array([[-0.40338351], [1.1849563]]), np.array([[-2.26910091]])
+
+# Test case 1
+x_1, y_1 = super_simple_separable()
+th1, th1_0 = sep_e_separator
+ans = svm_obj(x_1, y_1, th1, th1_0, .1)
+
+# Test case 2
+ans = svm_obj(x_1, y_1, th1, th1_0, 0.0)
