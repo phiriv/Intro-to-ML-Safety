@@ -163,3 +163,49 @@ ans = svm_obj(x_1, y_1, th1, th1_0, .1)
 
 # Test case 2
 ans = svm_obj(x_1, y_1, th1, th1_0, 0.0)
+
+
+# Returns the gradient of hinge(v) with respect to v.
+def d_hinge(v):
+    return np.where(v>=1, 0, -1)
+
+# Returns the gradient of hinge_loss(x, y, th, th0) with respect to th
+def d_hinge_loss_th(x, y, th, th0):
+    return d_hinge(y*(np.dot(th.T, x)+th0))*y*x
+
+# Returns the gradient of hinge_loss(x, y, th, th0) with respect to th0
+def d_hinge_loss_th0(x, y, th, th0):
+    return d_hinge(y*(np.dot(th.T, x)+th0))*y
+
+# Returns the gradient of svm_obj(x, y, th, th0) with respect to th
+def d_svm_obj_th(x, y, th, th0, lam):
+    return np.mean(d_hinge_loss_th(x,y,th,th0),axis=1, keepdims=True)+lam*2*th
+
+# Returns the gradient of svm_obj(x, y, th, th0) with respect to th0
+def d_svm_obj_th0(x, y, th, th0, lam):
+    return np.mean(d_hinge_loss_th0(x,y,th,th0),axis=1, keepdims=True)
+
+# Returns the full gradient as a single vector (which includes both th, th0)
+def svm_obj_grad(X, y, th, th0, lam):
+    grad_th=d_svm_obj_th(X,y,th,th0,lam)
+    grad_th0=d_svm_obj_th(X,y,th,th0,lam)
+    return np.vstack([grad_th,grad_th0])
+
+#PUTTING THE PUZZLE PIECES TOGETHER
+def batch_svm_min(data, labels, lam):
+    
+    def svm_min_step_fn(i):
+        return 2/(i+1)**0.5
+    
+    shtart=np.zeros((data.shape[0]+1,1))
+    
+    def funk(th):
+        return svm_obj(data, labels, th[-1:,:], th[-1:,:], lam)
+    
+    def dafunk(th):
+        def funk(th):
+            return svm_obj_grad(data, labels, th[-1:,:], th[-1:,:], lam)
+        
+    x, fs, xs = gd(funk, dafunk, shtart, svm_min_step_fn, 11)
+    
+    return x, fs, xs
