@@ -200,8 +200,8 @@ def d_ridge_obj_th(x, y, th, th0, lam):
     >>> d_ridge_obj_th(X, Y, th, th0, 100.).tolist()
     [[210.15], [14.05]]
     """
-    #Your code here
-    pass
+    
+    return d_mean_square_loss_th(x, y, th, th0) +2*lam*th
 
 def d_ridge_obj_th0(x, y, th, th0, lam):
     """Return the derivative of tghe ridge objective value with respect
@@ -219,8 +219,8 @@ def d_ridge_obj_th0(x, y, th, th0, lam):
     >>> d_ridge_obj_th0(X, Y, th, th0, 100.).tolist()
     [[4.05]]
     """
-    #Your code here
-    pass
+    
+    return d_mean_square_loss_th0(x, y, th, th0)
 
 #Concatenates the gradients with respect to theta and theta_0
 def ridge_obj_grad(x, y, th, th0, lam):
@@ -244,7 +244,7 @@ def sgd(X, y, J, dJ, w0, step_size_fn, max_iter):
     w (a column vector) (also in that order), and which returns a
     column vector.
 
-    w0: an initial value of weight vector www, which is a column
+    w0: an initial value of weight vector w, which is a column
     vector.
 
     step_size_fn: a function that is given the (zero-indexed)
@@ -254,12 +254,27 @@ def sgd(X, y, J, dJ, w0, step_size_fn, max_iter):
 
     Returns: a tuple (like gd):
     w: the value of the weight vector at the final step
-    fs: the list of values of JJJ found during all the iterations
-    ws: the list of values of www found during all the iterations
+    fs: the list of values of J found during all the iterations
+    ws: the list of values of w found during all the iterations
 
     """
-    #Your code here
-    pass
+    
+    
+    
+    w=w0
+    fs=[]
+    ws=[]
+    
+    for t in range(max_iter):
+        f2, df2 = J(w), dJ(w)
+        fs.append(f2)
+        ws.append(w)
+        #generate randomly sampled point(s) for update erection
+        direkt=np.random.randint(X)
+        step=step_size_fn(t)
+        w=w-step*df2*direkt
+        return w, fs, ws
+    
 
 ############################################################
 #From HW04; Used in the test case for sgd, below
