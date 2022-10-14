@@ -96,8 +96,8 @@ def d_lin_reg_th(x, th, th0):
     >>> d_lin_reg_th(X, th, th0).tolist()
     [[1.0, 2.0, 3.0, 4.0], [1.0, 1.0, 1.0, 1.0]]
     """
-    #Your code here
-    pass
+    #n=np.shape(x,0)
+    return x
 
 def d_square_loss_th(x, y, th, th0):
     """Returns the gradient of square_loss(x, y, th, th0) with respect to
@@ -121,8 +121,8 @@ def d_square_loss_th(x, y, th, th0):
     [[4.1, 7.399999999999999, 13.5, 15.600000000000001], [4.1, 3.6999999999999993, 4.5, 3.9000000000000004]]
 
     """
-    #Your code here
-    pass
+    
+    return -2*(y-lin_reg(x,th,th0))*d_lin_reg_th(x,th,th0)
 
 def d_mean_square_loss_th(x, y, th, th0):
     """ Returns the gradient of mean_square_loss(x, y, th, th0) with
@@ -142,8 +142,8 @@ def d_mean_square_loss_th(x, y, th, th0):
     # print("X =", repr(X))
     # print("Y =", repr(Y))
     # print("th =", repr(th), "th0 =", repr(th0))
-    #Your code here
-    pass
+    
+    return np.mean(d_square_loss_th(x, y, th, th0))
 
 def d_lin_reg_th0(x, th, th0):
     """ Returns the gradient of lin_reg(x, th, th0) with respect to th0.
@@ -153,8 +153,8 @@ def d_lin_reg_th0(x, th, th0):
     >>> d_lin_reg_th0(x, th, th0).tolist()
     [[1.0, 1.0, 1.0, 1.0]]
     """
-    #Your code here
-    pass
+    
+    return np.ones((1,x.shape[1]))
 
 def d_square_loss_th0(x, y, th, th0):
     """ Returns the gradient of square_loss(x, y, th, th0) with
@@ -168,8 +168,8 @@ def d_square_loss_th0(x, y, th, th0):
     >>> d_square_loss_th0(X, Y, th, th0).tolist()
     [[4.1, 3.6999999999999993, 4.5, 3.9000000000000004]]
     """
-    #Your code here
-    pass
+    
+    return -2 * (y - lin_reg(x, th, th0)) * d_lin_reg_th0(x, th, th0)
 
 def d_mean_square_loss_th0(x, y, th, th0):
     """ Returns the gradient of mean_square_loss(x, y, th, th0) with
@@ -181,8 +181,8 @@ def d_mean_square_loss_th0(x, y, th, th0):
     >>> d_mean_square_loss_th0(X, Y, th, th0).tolist()
     [[4.05]]
     """
-    #Your code here
-    pass
+    
+    return np.mean(d_square_loss_th0(x, y, th, th0))
 
 def d_ridge_obj_th(x, y, th, th0, lam):
     """Return the derivative of tghe ridge objective value with respect
@@ -496,3 +496,17 @@ def std_y(row):
     mu = np.mean(row, axis=1)
     sigma = np.sqrt(np.mean((row - mu)**2, axis=1))
     return np.array([(val - mu)/(1.0*sigma) for val in row]), mu, sigma
+
+######################################################################
+
+#TESTING
+
+X = np.array([[1., 2., 3., 4.], [1., 1., 1., 1.]])
+Y = np.array([[1., 2.2, 2.8, 4.1]])
+th = np.array([[1.0],[0.05]])
+th0 = np.array([[0.]])
+
+d_square_loss_th(X[:,0:1], Y[:,0:1], th, th0).tolist()
+
+d_square_loss_th(X, Y, th, th0).tolist()
+
