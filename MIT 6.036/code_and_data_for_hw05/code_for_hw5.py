@@ -185,7 +185,7 @@ def d_mean_square_loss_th0(x, y, th, th0):
     return np.mean(d_square_loss_th0(x, y, th, th0))
 
 def d_ridge_obj_th(x, y, th, th0, lam):
-    """Return the derivative of tghe ridge objective value with respect
+    """Return the derivative of the ridge objective value with respect
     to theta.
 
     Note: uses broadcasting to add d x n to d x 1 array below
@@ -258,9 +258,7 @@ def sgd(X, y, J, dJ, w0, step_size_fn, max_iter):
     ws: the list of values of w found during all the iterations
 
     """
-    
-    
-    
+    ''' 
     w=w0
     fs=[]
     ws=[]
@@ -274,7 +272,25 @@ def sgd(X, y, J, dJ, w0, step_size_fn, max_iter):
         step=step_size_fn(t)
         w=w-step*df2*direkt
         return w, fs, ws
+    '''
     
+    #more efficient version
+    n=y.shape[1]
+    pw=w0
+    fs=[]
+    ws=[]
+    
+    for j in range(max_iter):
+        k=np.random.randint(n)
+        yj=y[:,j:j+1]; Xj=X[:,j:j+1]
+        pf,pg = J(Xj,yj,pw), dJ(Xj,yj,pw)
+        fs.append(pf)
+        ws.append(pw)
+        
+        if (j==max_iter-1):
+            return pw, fs, ws
+        step=step_size_fn(j)
+        pw = pw - step*pg
 
 ############################################################
 #From HW04; Used in the test case for sgd, below
@@ -292,6 +308,9 @@ def num_grad(f):
             g[i,0] = (xp - xm)/(2*delta)
         return g
     return df
+
+def svm_min_step_fn(i):
+    return 2/(i+1)**0.5
 
 #Test case for sgd
 def sgdTest():
@@ -312,7 +331,7 @@ def sgdTest():
         return num_grad(f)(w)
 
     #Insert code to call sgd on the above
-    pass
+    sgd(X,y,J,dJ,0.001, svm_min_step_fn(),1000)
 
 ############################################################
 
