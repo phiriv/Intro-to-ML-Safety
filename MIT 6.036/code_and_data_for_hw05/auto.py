@@ -45,3 +45,14 @@ auto_values, mu, sigma = hw5.std_y(auto_values)
 #Make sure to scale the RMSE values returned by xval_learning_alg by sigma,
 #as mentioned in the lab, in order to get accurate RMSE values on the dataset
 
+#hw5.xval_learning_alg( (hw5.make_polynomial_feature_fun(5)) )
+#b=hw5.make_polynomial_feature_fun(5)
+hw5.xval_learning_alg(auto_data[0], auto_values, 0.02, 10)
+hw5.xval_learning_alg(auto_data[0], auto_values, 0.2, 10)
+hw5.xval_learning_alg(auto_data[0], auto_values, 2, 10)
+hw5.xval_learning_alg(auto_data[0], auto_values, 20, 10)
+
+hw5.xval_learning_alg(auto_data[1], auto_values, 0.02, 10)
+hw5.xval_learning_alg(auto_data[1], auto_values, 0.2, 10)
+hw5.xval_learning_alg(auto_data[1], auto_values, 2, 10)
+hw5.xval_learning_alg(auto_data[1], auto_values, 20, 10)
