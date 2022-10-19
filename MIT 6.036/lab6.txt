@@ -1,0 +1,32 @@
+2) Crime and Punishment
+
+One important part of designing a neural network application is understanding the problem domain and choosing
+
+    A representation for the input
+    The number of output units and what range of values they can take on
+    The loss function to try to minimize, based on actual and desired outputs
+
+We have studied input representation (featurization) in a previous lab, so in this problem we will concentrate on the number of output units, activation function on the output units, and loss function. These should generally be chosen jointly.
+
+Just as a reminder, among different loss functions and activation functions, we have studied:
+
+    Activation functions: linear, ReLU, sigmoid, softmax
+    Loss functions: hinge, negative log likelihood (NLL a.k.a. cross-entropy), quadratic (mean squared)
+
+For each of the following application domains, specify good choices for the number of units in the output layer, the activation function(s) on the output layer, and the loss function. When you choose to use multiple output units, be very clear on the details of how you are applying the activation and the loss. Please write your answers down!
+
+2.A) Map the words on the front page of the New York Times to the predicted (numerical) change in the stock market average.
+
+1, ReLU,  NLL
+
+2.B) Map a satellite image centered on a particular location to a value that can be interpreted as the probability it will rain at that location sometime in the next 4 hours.
+
+1, sigmoid,  quadratic
+
+2.C) Map the words in an email message to which one of a user’s fixed set of email folders it should be filed in.
+
+5, linear,  hinge
+
+2.D) Map the words of a document into a vector of outputs, where each index represents a topic, and has value 1 if the document addresses that topic and 0 otherwise. Each document may contain multiple topics, so in the training data, the output vectors may have multiple 1 values.
+
+7, softmax,  NLL
