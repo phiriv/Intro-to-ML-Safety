@@ -544,3 +544,4 @@ d_square_loss_th(X[:,0:1], Y[:,0:1], th, th0).tolist()
 
 d_square_loss_th(X, Y, th, th0).tolist()
 
+
