@@ -50,7 +50,7 @@ class Tanh(Module):  # Layer activation
         return self.A
 
     def backward(self, dLdA):  # Uses stored self.A
-        return np.dot(dLdA,A)  # dLdZ (?, b)
+        return np.dot(dLdA,(1.0-self.A**2))  # dLdZ (?, b)
 
 
 class ReLU(Module):  # Layer activation
@@ -65,7 +65,7 @@ class ReLU(Module):  # Layer activation
         return self.A
 
     def backward(self, dLdA):  # uses stored self.A
-        return np.dot(dLdA,A)   #  dLdZ (?, b)
+        return np.dot(dLdA,(self.A!=0))   #  dLdZ (?, b)
 
 
 class SoftMax(Module):  # Output activation
@@ -74,13 +74,13 @@ class SoftMax(Module):  # Output activation
         return (np.exp(z)/np.sum(np.exp(z)))
 
     def forward(self, Z):
-        return None  # Your code: (?, b)
+        return softmax(Z) # Your code: (?, b)
 
     def backward(self, dLdZ):  # Assume that dLdZ is passed in
         return dLdZ
 
     def class_fun(self, Ypred):  # Return class indices
-        return None  # Your code: (1, b)
+        return np.argmax(Ypred)  # Your code: (1, b)
 
 
 # Loss modules
@@ -97,10 +97,10 @@ class NLL(Module):  # Loss
     def forward(self, Ypred, Y):
         self.Ypred = Ypred
         self.Y = Y
-        return None  # Your code: return loss (scalar)
+        return float(np.sum(-Y*np.log(Ypred)))  # Your code: return loss (scalar)
 
     def backward(self):  # Use stored self.Ypred, self.Y
-        return None  # Your code (?, b)
+        return self.Ypred-self.Y  # prediction error!
 
 
 # Neural Network implementation
@@ -111,8 +111,17 @@ class Sequential:
 
     def sgd(self, X, Y, iters=100, lrate=0.005):  # Train
         D, N = X.shape
+        sumL=0 #maintain total loss count
         for it in range(iters):
-            pass  # Your code
+            i=np.random.randint(N) #random index selection, NOT dim
+            Xt=X[:,i:i+1]
+            Yt=Y[:,i:i+1]
+            Ypred=self.forward(Xt)
+            sumL+=self.NLL.forward(Ypred,Yt)
+            err=self.NLL.backward()
+            self.backward(err)
+            self.sgd_step(lrate)
+            
 
     def forward(self, Xt):  # Compute Ypred
         for m in self.modules: Xt = m.forward(Xt)
