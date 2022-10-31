@@ -50,19 +50,29 @@ class Tanh(Module):  # Layer activation
         return self.A
 
     def backward(self, dLdA):  # Uses stored self.A
-        return None  # Your code: return dLdZ (?, b)
+        return np.dot(dLdA,A)  # dLdZ (?, b)
 
 
 class ReLU(Module):  # Layer activation
+
+    def relu(x):
+        return x*(x>0)
+
     def forward(self, Z):
-        self.A = None  # Your code: (?, b)
+        # TODO: define
+        #https://stackoverflow.com/questions/32109319/how-to-implement-the-relu-function-in-numpy#40013151
+        self.A = np.relu(Z)  # (?, b) 
         return self.A
 
     def backward(self, dLdA):  # uses stored self.A
-        return None  # Your code: return dLdZ (?, b)
+        return np.dot(dLdA,A)   #  dLdZ (?, b)
 
 
 class SoftMax(Module):  # Output activation
+
+    def softmax(z):
+        return (np.exp(z)/np.sum(np.exp(z)))
+
     def forward(self, Z):
         return None  # Your code: (?, b)
 
