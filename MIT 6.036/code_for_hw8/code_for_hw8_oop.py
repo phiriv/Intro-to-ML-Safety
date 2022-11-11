@@ -9,6 +9,11 @@
 # OPTIONAL: Problem 2A) - Mini-batch GD
 ######################################################################
 
+import code_for_hw7
+import numpy as np
+import modules_disp as disp
+from expected_results import *
+
 class Sequential:
     def __init__(self, modules, loss):            
         self.modules = modules

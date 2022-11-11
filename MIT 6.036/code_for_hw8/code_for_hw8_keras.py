@@ -212,7 +212,7 @@ def l1_reg(weight_matrix):
 
 def filter_reg(weights):
     lam=0
-    return lam* val
+    return lam*weights
 
 def get_image_data_1d(tsize,image_size,prob):
     #prob controls the density of white pixels
