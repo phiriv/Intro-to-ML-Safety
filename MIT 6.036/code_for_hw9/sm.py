@@ -26,6 +26,22 @@ class SM:
             return output
         
 
+
+class Binary_Addition(SM):
+    start_state = (0,0)
+
+    def transition_fn(self, s, x):
+        #return(s[-1]+x[-1]) #APPENDAGE
+        (carry,digit)=s
+        (i0,i1)=x
+        tot=i0+i1+carry
+        
+        return 1 if tot>1 else 0,tot%2
+
+    def output_fn(self, s):
+        (carry,digit)=s
+        return digit
+
 class Accumulator(SM):
     start_state = 0
 
@@ -34,19 +50,6 @@ class Accumulator(SM):
 
     def output_fn(self, s):
         return s
-
-
-class Binary_Addition(SM):
-    start_state = None # Change
-
-    def transition_fn(self, s, x):
-        # Your code here
-        pass
-
-    def output_fn(self, s):
-        # Your code here
-        pass
-
 
 class Reverser(SM):
     start_state = None
