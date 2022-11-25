@@ -1,4 +1,5 @@
 from util import *
+import numpy as np
 
 class SM:
     start_state = None  # default start state
@@ -65,13 +66,18 @@ class Reverser(SM):
 
 class RNN(SM):
     def __init__(self, Wsx, Wss, Wo, Wss_0, Wo_0, f1, f2):
-        # Your code here
-        pass
+        self.Wsx=Wsx
+        self.Wsx=Wss
+        self.Wsx=Wo
+        self.Wss_0=Wss_0
+        self.Wo_0=Wo_0
+        self.Wsx=Wsx
+        self.f1=f1
+        self.f2=f2
 
     def transition_fn(self, s, i):
-        # Your code here
-        pass
+        s=f1(Wss*s+Wsx*x+Wo)
+        
 
     def output_fn(self, s):
-        # Your code here
-        pass
+        returnf2(Wo*s)+Wo_0
