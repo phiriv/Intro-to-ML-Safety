@@ -71,13 +71,17 @@ class RNN(SM):
         self.Wsx=Wo
         self.Wss_0=Wss_0
         self.Wo_0=Wo_0
-        self.Wsx=Wsx
         self.f1=f1
         self.f2=f2
+        self.l=self.Wsx.shape[1]
+        self.m=self.Wss.shape[1]
+        self.n=self.Wo.shape[1]
+        self.start_state=np.zeros((self.n,1))
+        
 
     def transition_fn(self, s, i):
-        s=f1(Wss*s+Wsx*x+Wo)
+        return self.f1(np.dot(self.Wss,s)+np.dot(self.Wsx,x)+self.Wss_0)
         
 
     def output_fn(self, s):
-        returnf2(Wo*s)+Wo_0
+        return self.f2(np.dot(self.Wo,s)+self.Wo_0)
