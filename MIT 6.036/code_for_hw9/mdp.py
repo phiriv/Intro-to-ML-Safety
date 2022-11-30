@@ -77,7 +77,7 @@ def value(q, s):
     10
     """
     # Your code here
-    pass
+    return argmax(q,s)
 
 # Given a state, return the action that is greedy with reespect to the
 # current definition of the q function
