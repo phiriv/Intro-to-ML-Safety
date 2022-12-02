@@ -63,7 +63,7 @@ def value_iteration(mdp, q, eps = 0.01, interactive_fn = None,
     #initialization
     #for s in q.states, a in q.actions:
         #q(s,a)=0
-    
+    '''
     for j in range(0,max_iters):
         
         for s in q.states, a in q.actions:
@@ -73,7 +73,27 @@ def value_iteration(mdp, q, eps = 0.01, interactive_fn = None,
         if abs(n_q-q) < eps:
             return n_q
         Q_old=Q
-
+    '''
+    def v(s): #quick value calc
+        return value(q,s)
+    
+    for i in range(0,max_iters):
+        
+        n_q=q.copy() #if this isn't here updating won't work
+        delt=0
+        
+        for s in mdp.states:
+            for a in mdp.actions:
+                #rather than defining a new var every time, re-assign class obj.
+                n_q.set(s, a, mdp.reward_fn(s,a) + mdp.discount_factor*mdp.transition_model(s,a).expectation(v))
+                delt=max(delt,abs(n_q.get(s,a)-q.get(s,a))) #termination condition
+                
+        if delt<eps:
+            return n_q
+        q=n_q
+        
+    return q
+        
 # Compute the q value of action a in state s with horizon h, using
 # expectimax
 def q_em(mdp, s, a, h):
@@ -135,7 +155,7 @@ class TabularQ:
     def __init__(self, states, actions):
         self.actions = actions
         self.states = states
-        self.q = dict([((s, a), 0.0) for s in states for a in actions])
+        self.q = dict([((s, a), 0.0) for s in states for a in actions]) #init
     def copy(self):
         q_copy = TabularQ(self.states, self.actions)
         q_copy.q.update(self.q)
