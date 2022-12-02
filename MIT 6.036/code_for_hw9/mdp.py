@@ -76,10 +76,9 @@ def value(q, s):
     >>> q_star
     10
     """
-    # Your code here
-    return argmax(q,s)
+    return max(q.get(s,a) for a in q.actions) #get max val from dict.
 
-# Given a state, return the action that is greedy with reespect to the
+# Given a state, return the action that is greedy with reespect to x
 # current definition of the q function
 def greedy(q, s):
     """ Return pi*(s) based on a greedy strategy.
@@ -93,8 +92,7 @@ def greedy(q, s):
     >>> greedy(q, 1)
     'b'
     """
-    # Your code here
-    pass
+    return argmax(q.actions, value(q,s))
 
 def epsilon_greedy(q, s, eps = 0.5):
     """ Return an action.
