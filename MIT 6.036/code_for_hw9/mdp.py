@@ -53,10 +53,26 @@ class MDP:
 # dictionary mapping (s, a) pairs into Q values This must be
 # initialized before interactive_fn is called the first time.
 
+#Use mdp class definitions to get the reward function, discount factor, 
+#transition model, and expectation of the Q-values over a distribution
+
+#terminate when max(s,a) |Qt(s,a) - Qt-1(s,a)| < eps
+
 def value_iteration(mdp, q, eps = 0.01, interactive_fn = None,
                     max_iters = 10000):
-    # Your code here
-    pass
+    #initialization
+    #for s in q.states, a in q.actions:
+        #q(s,a)=0
+    
+    for j in range(0,max_iters):
+        
+        for s in q.states, a in q.actions:
+            Q=mdp.reward_fn(s,a)+mdp.discount_factor*mdp.transition_model(s,a)*value(q,s)
+        
+            n_q=q.copy() #save val between iters
+        if abs(n_q-q) < eps:
+            return n_q
+        Q_old=Q
 
 # Compute the q value of action a in state s with horizon h, using
 # expectimax
