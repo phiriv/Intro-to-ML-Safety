@@ -109,11 +109,10 @@ def epsilon_greedy(q, s, eps = 0.5):
     'b'
     """
     if random.random() < eps:  # True with prob eps, random action
-        # Your code here
-        pass
+        a=random.randint(len(q.actions()))
+        return q.actions(a)
     else:
-        # Your code here
-        pass
+        return argmax(q.actions, lambda r: q.get(s,a))
 
 class TabularQ:
     def __init__(self, states, actions):
