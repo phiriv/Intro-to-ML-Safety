@@ -94,13 +94,18 @@ def value_iteration(mdp, q, eps = 0.01, interactive_fn = None,
         
     return q
         
-# Compute the q value of action a in state s with horizon h, using
-# expectimax
+# Compute the q value of action a in state s with horizon h, using expectimax
 def q_em(mdp, s, a, h):
-    if h==0:
+    if h==0: #base case
         return 0
-    else:
-        return mdp.transition_model(s,a)*mdp.reward_fn(s,a) + q_em(s,a,h-1)
+    else:    #recursive case
+        return mdp.reward_fn(s,a) + mdp.discount_factor* \
+            sum( [p*max( [ q_em(mdp,sp,ap,h-1) for ap in mdp.actions] ) for (sp,p) in mdp.transition_model(s,a).d.items() ] )
+            #Big messy statement! 
+            #1st term is the immediate reward for transitioning out of the current state
+            #2nd is the discounted reward with recursion, where we iterate
+            #over the states and probabilities (expectations) of the transition model
+            #and take the corresponding max of the associated actions/rewards
 
 # Given a state, return the value of that state, with respect to the
 # current definition of the q function
