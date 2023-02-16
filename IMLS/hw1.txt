@@ -1,0 +1,92 @@
+1. In a vanilla NN (no LN/BN, learnable activation params, etc.) the network has
+
+n_connections= (100*10^3)+(1*10^3)+(10*10^3)+(1*10)+(10*1)+(1*1)=11121
+
+2. Recall the defintions of linearity and convexity for a fcuntion. The following are then true:
+
+a) A fully connected network without activations is linearity
+
+d) ResNet-50 is nonlinear AND convvex
+
+3. The following properties apply per activation funck:
+
+a) Sigmoid: monotonically increasing, invertible
+
+b) ReLU: monotonically nondecreasing, invertible, zero gradient
+
+c) GELU: convex, monotonically nondecreasing
+
+4. PyTorch code to produce a 10x5 GIF w/ each entry sampled from N(mu=50, sig2=16):
+
+x=torch.randn(10,5)*16 +5
+
+'' '' 10x10 uniform matrix sampled from U[-1,1]:
+
+y=torch.rand(10,10)*2 -1
+
+6. a) For a spiking loss curve, use an AUC activation fn. since it is threshold invariant
+
+b) Wild curve: decrease learning rate, switch from cross entropy to squared loss
+
+c) Higher loss on test: shuffle butches, betch size to one
+
+d) Cyclic: check for div by zero or logarithms of small numbers, data augmentation
+
+7. When optimizing NN params, we're searching for the best function f consistent with a partikular architecture.
+
+As such these two setups have the same expressivity, i.e. can express the same range of mathematical objects:
+
+F_a = {f | f(x) = W4*W3*ReLU(W2*W1*x), x \memberof |R^100, W1 \memberof |R^60x100, W2 40x60, W3 32x40, W4 24x32}
+
+F_c = {f | f(x) = W2*W2*ReLU(W1*x), x \memberof |R^100, W1 \memberof |R^40x100, W2 39x40, W3 24x39}
+
+Reasoning: same activation fn. composition, same dims before/after nonlinear transformation
+
+9. Here we have a hypothetical optimizer:
+
+n <- n+1
+
+g <- 1/n*nabla(theta*sum(i=1,N,L(\theta | xi,yi))) + (n-1)/n*g
+
+theta <- theta - alpha*gradient
+
+It differs from SGD w/ momenta because b) the running avg. gives more weight to older grads, slowing and in some cases outright preventing convergence
+
+10. We have 1 hidden layer RELU s.t. f(x)=w^T * max(Ax,0) w/ iput x E R^d, weight matrix A E R^kxd, weight vec. w E R^k
+
+The gradient of f(x) w.r.t input x is thus
+
+c) A^T*Z for Z E R^kxk (diag. mat) s.t. Zii=1 if (Ax)i>0, 0 if (Ax)i<=0
+
+11.. In plots related to scaling laws
+
+d) It's evident that larger models require fewer training tokens to reach the same performance as smaller models
+
+a) The 1st training batch of the largest model uses more compute than the entire training run of the smallets! YOWZA BOWZA
+
+c) When L=2.57*C^(-0.048), changing the coefficient to 3 doesn't change the sloper
+
+13. Time complexity of beam search to generate a seq. of length T w/ beam of width K is 
+
+b) O(K^T)
+
+14. Evaluate the following statements w.r.t. LSTMs & vanilla RNNs:
+
+a) RNNs use backprop in time to kompute grads bcuz a fwd. pass involves deltaT: TRUE
+
+b) Gating fns. in LSTMs prevents poofing grads. : FALSE
+
+c) Gradient clipping can't be used to remedy kaboomboom grads in RNNs: TRUE
+
+d) LSTMs can model long-range dependencies that RNNs KANNOT: TRUE
+
+15. " " w.r.t. Transformers
+
+a) Unlike the RRN case, number of learnable params. scales proportional to max trained seq/ length: TRUE
+
+b) After removing all feedfwd. layers in a std. transformer, each output is in fact a linear transformation of the input: TRU
+
+c) Without positional encodings, transformer encoding is permutation-invariant: ABSOLUTELY DEMONSTRABLY FALSE
+
+d) Ops. in a multi-headed monster layer are paralleliped: TRǕ
+
